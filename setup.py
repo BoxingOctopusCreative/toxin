@@ -2,7 +2,8 @@ from setuptools import setup
 
 REQUIREMENTS = [
     'requests',
-    'click'
+    'click',
+    'pyfiglet'
 ]
 
 VERSION = 0.5
