@@ -35,15 +35,25 @@ the attacker, to have prior knowledge of your target.
 ## Usage
 
 ```bash
+  ______           _
+ /_  __/___  _  __(_)___
+  / / / __ \| |/_/ / __ \
+ / / / /_/ />  </ / / / /
+/_/  \____/_/|_/_/_/ /_/
+
+
 Usage: toxin [OPTIONS]
 
-  Toxin: Local File Inclusion/Log Pollution Exploitation Tool
+  Toxin: Local File Inclusion Exploitation Tool
 
 Options:
   -u, --url TEXT        URL to query
   -p, --parameter TEXT  Parameter to inject into User-Agent header
+                        (Default: 'cmd')
   -c, --command TEXT    Command to Run
   -m, --mode TEXT       Mode (Inject or Exploit)
   -g, --paged           Paged Output
+  --version             Show the version and exit.
   --help                Show this message and exit.
+  -h                    Show this message and exit.
 ```
