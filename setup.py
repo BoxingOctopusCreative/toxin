@@ -18,7 +18,7 @@ setup(
     author='Ryan Draga',
     author_email='ryan.draga@boxingoctop.us',
     url=REPO_URL,
-    download_url='{0}/archive/{1}.tar.gz'.format(REPO_URL, str(VERSION)),
+    download_url=F'{REPO_URL}/archive/{VERSION}.tar.gz',
     keywords=['LFI', 'Exploit'],
     python_requires='>=3.0',
     install_requires=REQUIREMENTS,
