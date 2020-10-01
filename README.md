@@ -17,14 +17,14 @@ like so:
 <?php system($_GET['cmd']); ?>
 ```
 
-With the new, malicious global variable registered, we can add it 
+With the new malicious global variable registered, we can add it 
 to a query string within a URL containing a file on the target host
-which is vulnerable to inclusion, and then use the file along with
+which is vulnerable to inclusion and then use the file along with
 the query string to execute arbitrary system-level commands, like so:
 
 `http://target.tld/info.php?page=../../../../../var/log/apache/access.log&cmd=whoami`
 
-There are a number of common files which typically fall prey to this attack, 
+There are number of common files which typically falls prey to this attack, 
 Toxin does not attempt to fuzz for those files, but instead expects you, 
 the attacker, to have prior knowledge of your target.
 
